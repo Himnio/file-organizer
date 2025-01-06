@@ -1,19 +1,29 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"path/filepath"
 )
 
 func main() {
+	var dirPath string
 
 	if len(os.Args) < 2 {
-		fmt.Println("Run the following command + directory path :  go run main.go [directory path]")
-		return
+		fmt.Println("Enter the directory path:")
+		scanner := bufio.NewScanner(os.Stdin)
+		if scanner.Scan() {
+			dirPath = scanner.Text()
+		}
+		if dirPath == "" {
+			fmt.Println("No directory path provided. Exiting...")
+			return
+		}
+	} else {
+		dirPath = os.Args[1]
 	}
 
-	dirPath := os.Args[1]
 	fmt.Println("Organizing file in:", dirPath)
 	files, err := readFiles(dirPath)
 	if err != nil {
